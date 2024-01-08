@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Details</title>
+</head>
+<body>
+    <h1>{{ game_info.name }}</h1>
+    <p>Genres: {{ game_info.genres|join:", " }}</p>
+    <p>Release Date: {{ game_info.released }}</p>
+    <p>Platforms: {{ game_info.platforms|join:", " }}</p>
+    <!-- Add more details as needed -->
+</body>
+</html>
