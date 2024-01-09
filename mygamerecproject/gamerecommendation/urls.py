@@ -17,11 +17,12 @@ Including another URLconf
 # gamerecommendation/urls.py
 from django.contrib import admin
 from django.urls import path, include
-from gamerecommendationapp.views import game_details  # Update the import
+from gamerecommendationapp.views import game_details, home  # Update the import
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', game_details, name='default_view'),  # Add this line for the root path
+    #path('', game_details, name='default_view'),  # Add this line for the root path
+    path('', home, name='default_view'),
     path('gamerecommendation/', include('gamerecommendationapp.urls')),
     # Add other app URLs as needed
 ]
