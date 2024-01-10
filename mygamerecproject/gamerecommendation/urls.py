@@ -16,15 +16,19 @@ Including another URLconf
 """
 # gamerecommendation/urls.py
 from django.contrib import admin
-from django.urls import path, include
-from gamerecommendationapp.views import game_details, home  # Update the import
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
+from gamerecommendationapp.views import home, game_details
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('', game_details, name='default_view'),  # Add this line for the root path
-    path('', home, name='default_view'),
     path('gamerecommendation/', include('gamerecommendationapp.urls')),
-    # Add other app URLs as needed
-]
+    path('api/', include('api.urls')),
 
+    # Add a catch-all pattern for the React app
+    path('react-app/', TemplateView.as_view(template_name='frontend/my-react-app/public/index.html'), name='react_app'),
+
+    # Add a default view or replace it with your desired default view
+    path('', home, name='default_view'),
+]
 

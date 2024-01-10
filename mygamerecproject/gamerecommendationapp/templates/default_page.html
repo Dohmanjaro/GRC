@@ -1,28 +1,17 @@
-<!-- default_page.html -->
+{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Default Page</title>
-</head>
-<body>
-    <h1>Game Search Results</h1>
+    <title>Game Search Results</title>
 
-    <form method="get" action="/">
-        <label for="search">Search:</label>
-        <input type="text" name="search" id="search">
-        <input type="submit" value="Search">
-    </form>
-    
-    {% if searched_games %}
-    <ul>
-        {% for game in searched_games %}
-            <li>{{ game.name }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No games found.</p>
-{% endif %}
+    {% render_bundle 'main' %}
+    {% render_bundle '0' %}
+    {% render_bundle 'bundle' %}
+    {% render_bundle 'runtime' %}</head>
+
+<body>
+    <div id="root"></div>
 </body>
 </html>

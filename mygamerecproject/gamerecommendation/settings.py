@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import os
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,6 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 #RAWG API Key
 RAWG_API_KEY = config('RAWG_API_KEY')
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend', 'my-react-app', 'build', 'static'),
+]
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,8 +49,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'gamerecommendationapp'
+    'gamerecommendationapp',
+        'api',
+
+
+        'webpack_loader',
+
+    'rest_framework'
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,3 +142,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'frontend/',  # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'my-react-app', 'webpack-stats.json'),
+    }
+}

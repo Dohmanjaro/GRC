@@ -1,0 +1,80 @@
+<!-- default_page.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Search Results</title>
+    <style>
+        img {
+            width: 125px;
+            height: 150px; /* Maintain aspect ratio */
+            display: block; /* Remove extra spacing below images */
+            margin: 10px 0; /* Add margin for spacing between images */
+        }
+        a {
+            color: inherit; /* Inherit text color */
+            text-decoration: none; /* Remove underline */
+            cursor: pointer; /* Change cursor to pointer */
+        }
+
+        a:hover {
+            text-decoration: underline; /* Add underline on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Search Results</h1>
+
+    <form method="get" action="/">
+        <input type="text" name="search" id="search">
+        <input type="submit" value="Search">
+    </form>
+    
+    <div id="root"></div>
+
+    <!-- Add a script to render the React app using the development server -->
+    <script>
+      const mountNode = document.getElementById('root');
+      const script = document.createElement('script');
+      script.src = 'http://localhost:3000/static/js/bundle.js'; // Replace with the correct port
+      document.head.appendChild(script);
+    </script>
+
+    {% if searched_games %}
+    <ul>
+        {% for game in searched_games %}
+            <li>
+                <!-- Wrap the game information in an anchor tag -->
+                <a href="{% url 'game_details' game.slug %}">
+                    <strong>{{ game.name }}</strong>
+                    {% if game.background_image %}
+                        <img src="{{ game.background_image }}" alt="{{ game.name }} Background">
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="pagination">
+            <span class="step-links">
+                {% if searched_games.has_previous %}
+                    <a href="?search={{ request.GET.search }}&page=1">&laquo; first</a>
+                    <a href="?search={{ request.GET.search }}&page={{ searched_games.previous_page_number }}">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ searched_games.number }} of {{ searched_games.paginator.num_pages }}.
+                </span>
+        
+                {% if searched_games.has_next %}
+                    <a href="?search={{ request.GET.search }}&page={{ searched_games.next_page_number }}">next</a>
+                    <a href="?search={{ request.GET.search }}&page={{ searched_games.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>No games found.</p>
+    {% endif %}
+</body>
+</html>

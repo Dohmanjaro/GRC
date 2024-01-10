@@ -1,3 +1,4 @@
+<!-- game_details.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,18 +7,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ game_info.name }}</title>
     <style>
-.game-image {
-    width: 800px;  /* Set a fixed width for testing */
-    height: auto;  /* Maintain aspect ratio */
-    /* Add more styles if needed */
-}
+        /* Add CSS styles for the images and anchor tags */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+            max-height: 500px;
+        }
 
+        a {
+            color: inherit; /* Inherit text color */
+            text-decoration: none; /* Remove underline */
+            cursor: pointer; /* Change cursor to pointer */
+        }
 
+        a:hover {
+            text-decoration: underline; /* Add underline on hover */
+        }
     </style>
 </head>
 <body>
-
     <h1>{{ game_info.name }}</h1>
+
+    <!-- Search form for searching again -->
+    <form method="get" action="/">
+        <input type="text" name="search" id="search">
+        <input type="submit" value="Search">
+    </form>
 
     <img src="{{ game_info.background_image }}" alt="{{ game_info.name }}" class="game-image">
 
@@ -39,7 +56,6 @@
         {% for platform_info in game_info.platforms %}
             <li>{{ platform_info.platform.name }}</li>
         {% endfor %}
-    </ul>    
-
+    </ul>
 </body>
 </html>
