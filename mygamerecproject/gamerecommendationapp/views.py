@@ -2,6 +2,12 @@
 from django.shortcuts import render
 from .utils.rawg_api import get_game_details, search_games
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from rest_framework.views import APIView 
+from . models import *
+from rest_framework.response import Response 
+from . serializer import *
+from django.http import JsonResponse
+
 
 def game_details(request, game_slug):
     game_info = get_game_details(game_slug)
@@ -10,9 +16,6 @@ def game_details(request, game_slug):
         return render(request, "game_details.html", {"game_info": game_info})
     else:
         return render(request, "error.html")
-
-# gamerecommendationapp/views.py
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home(request):
     search_query = request.GET.get('search')
@@ -43,3 +46,10 @@ def home(request):
         return render(request, 'default_page.html', {'searched_games': searched_games, 'search_query': search_query})
     else:
         return render(request, 'default_page.html', {'searched_games': []})
+
+
+def search_view(request):
+    query = request.GET.get('query', '')
+    # Perform processing based on the query
+    result = f"Search result for: {query}"
+    return JsonResponse({'result': result})

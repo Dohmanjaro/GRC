@@ -1,17 +1,196 @@
-{% load render_bundle from webpack_loader %}
+<!-- default_page.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Search Results</title>
+    
+    <!-- Bootstrap CSS -->
+    <link id="bootstrap-stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 
-    {% render_bundle 'main' %}
-    {% render_bundle '0' %}
-    {% render_bundle 'bundle' %}
-    {% render_bundle 'runtime' %}</head>
+    <style>
+        body img {
+            width: 125px;
+            height: 150px;
+            display: block;
+            margin: 10px 0;
+        }
 
-<body>
-    <div id="root"></div>
-</body>
-</html>
+        /* Override Bootstrap styles for responsive images */
+        body .img-fluid {
+            width: 125px; /* Ensure the image is not constrained by max-width */
+            height: 150px; /* Allow the height to adjust based on the width */
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        body {
+            background-color: #fff; /* Default light mode background color */
+            color: #333; /* Default light mode text color */
+            position: relative;
+        }
+
+         /* Light mode styles */
+         body.light-mode {
+            background-color: #fff;
+            color: #333;
+        }
+
+        body.light-mode form {
+            /* Add specific styles for the search bar in light mode */
+            background-color: #eee; /* Example background color */
+            color: #333; /* Example text color */
+            padding: 15px;
+            border-radius: 10px;
+            margin: 60px auto 20px;
+            max-width: 400px;
+        }
+
+        body.light-mode form input[type="text"],
+        body.light-mode form input[type="submit"] {
+            /* Add specific styles for the input and button in light mode */
+            width: 100%; /* Set the width to 100% to make it full-width */
+            background-color: #ccc; /* Example background color */
+            color: #333; /* Example text color */
+        }
+
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333; /* Dark mode background color */
+            color: #fff; /* Dark mode text color */
+        }
+
+        #dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* Dark mode search engine styles */
+        body.dark-mode form {
+            background-color: #333; /* Dark mode search engine background color */
+            color: #fff; /* Dark mode search engine text color */
+            padding: 15px;
+            border-radius: 10px;
+            margin: 60px auto 20px; /* Adjusted margin for centering and lowering */
+            max-width: 400px; /* Limit the width for better visibility */
+        }
+
+        body.dark-mode form input[type="text"],
+        body.dark-mode form input[type="submit"] {
+            background-color: #555; /* Dark mode search engine input and button background color */
+            color: #fff; /* Dark mode search engine input and button text color */
+        }
+
+        /* Dark mode pagination styles */
+        body.dark-mode .pagination {
+            margin-top: 20px; /* Adjusted margin to position higher from the bottom */
+            font-size: 1.2rem; /* Larger font size for better visibility */
+        }
+
+        body.dark-mode .pagination a,
+        body.dark-mode .pagination .current {
+            color: #fff; /* Dark mode pagination text color */
+        }
+
+        body.dark-mode .pagination .btn-link {
+            color: #007bff; /* Dark mode pagination link color */
+        }
+
+        body.dark-mode .pagination .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Adjusted position for "No games found" */
+        .no-games-found {
+            margin-top: 10px; /* Adjusted margin to align with search bar */
+            padding: 10px; /* Added padding for better spacing */
+            text-align: center; /* Center the message */
+        }
+    </style>
+</head>
+<body class="container">
+
+    <!-- Dark mode toggle button -->
+    <button id="dark-mode-toggle" class="btn btn-secondary">Toggle Dark Mode</button>
+
+    <!-- Form for searching (can be removed if using React search) -->
+    <form class="my-3" method="get" action="/">
+        <div class="form-group text-center">
+            <input type="text" class="form-control" name="search" id="search">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    {% if searched_games %}
+    <ul class="list-unstyled">
+        {% for game in searched_games %}
+            <li class="my-3">
+                <a href="{% url 'game_details' game.slug %}">
+                    <strong>{{ game.name }}</strong>
+                    {% if game.background_image %}
+                        <img src="{{ game.background_image }}" alt="{{ game.name }} Background" class="img-fluid">
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="pagination mt-4">
+        <span class="step-links">
+            {% if searched_games.has_previous %}
+                <a href="?search={{ request.GET.search }}&page=1" class="btn btn-link">&laquo; first</a>
+                <a href="?search={{ request.GET.search }}&page={{ searched_games.previous_page_number }}" class="btn btn-link">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ searched_games.number }} of {{ searched_games.paginator.num_pages }}.
+            </span>
+    
+            {% if searched_games.has_next %}
+                <a href="?search={{ request.GET.search }}&page={{ searched_games.next_page_number }}" class="btn btn-link">next</a>
+                <a href="?search={{ request.GET.search }}&page={{ searched_games.paginator.num_pages }}" class="btn btn-link">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+        <p class="no-games-found">No games found.</p>
+    {% endif %}
+    
+     <!-- Bootstrap JS and Popper.js (required for Bootstrap JavaScript components) -->
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ 
+     <!-- Dark mode toggle script -->
+     <script>
+         const darkModeToggle = document.getElementById('dark-mode-toggle');
+         const body = document.body;
+ 
+         // Check local storage for dark mode preference
+         const isDarkMode = localStorage.getItem('darkMode') === 'true';
+ 
+         // Apply dark mode if the preference is set
+         if (isDarkMode) {
+             body.classList.add('dark-mode');
+         }
+ 
+         darkModeToggle.addEventListener('click', () => {
+             // Toggle dark mode class
+             body.classList.toggle('dark-mode');
+ 
+             // Update local storage with the current dark mode state
+             localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+         });
+     </script>
+ </body>
+ </html>

@@ -18,17 +18,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
-from gamerecommendationapp.views import home, game_details
+from gamerecommendationapp.views import home, game_details, search_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gamerecommendation/', include('gamerecommendationapp.urls')),
-    path('api/', include('api.urls')),
+    #path('api/', include('api.urls')),
 
     # Add a catch-all pattern for the React app
     path('react-app/', TemplateView.as_view(template_name='frontend/my-react-app/public/index.html'), name='react_app'),
 
     # Add a default view or replace it with your desired default view
     path('', home, name='default_view'),
+
 ]
 

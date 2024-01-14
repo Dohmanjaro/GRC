@@ -50,12 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gamerecommendationapp',
-        'api',
+        'rest_framework' , 
+        'corsheaders', 
 
-
-        'webpack_loader',
-
-    'rest_framework'
 ]
 
 
@@ -68,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'gamerecommendation.urls'
@@ -150,3 +148,9 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'my-react-app', 'webpack-stats.json'),
     }
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [   'rest_framework.permissions.AllowAny' ]
+
+}
+CORS_ORIGIN_ALLOW_ALL = True

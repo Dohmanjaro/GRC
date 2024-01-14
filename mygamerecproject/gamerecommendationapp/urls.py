@@ -1,11 +1,10 @@
-from django.urls import path, re_path
+from django.urls import path, include
 from django.views.generic import TemplateView
-from .views import home, game_details
+from .views import home, game_details, search_view
 
 urlpatterns = [
     path('', home, name='home'),
     path('gamerecommendation/game-details/<str:game_slug>/', game_details, name='game_details'),
+    path('gamerecommendationapp/gamerecommendationapp/search', search_view, name='search_view'),  # Update this line
 
-    # Use re_path to serve the React app
-    re_path(r'^react-app/.*', TemplateView.as_view(template_name='frontend/my-react-app/build/index.html'), name='react_app'),
 ]

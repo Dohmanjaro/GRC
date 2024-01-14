@@ -9,3 +9,8 @@ class Game(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class React(models.Model): 
+    name = models.CharField(max_length=30) 
+    detail = models.CharField(max_length=500)
